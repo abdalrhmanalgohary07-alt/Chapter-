@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081326"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="الشابترز"><title>Study Chapters To‑Do</title>
+<style>
+:root{--bg:#071326;--panel:#0d1c33;--line:#203a5c;--txt:#edf5ff;--muted:#9fb1c8;--cyan:#38bdf8;--violet:#a78bfa;--r:18px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0,#18345b 0,transparent 33%),radial-gradient(ellipse at 90% 8%,#30205c 0,transparent 28%),var(--bg);background-attachment:fixed;color:var(--txt);font-family:"Segoe UI",Tahoma,system-ui,-apple-system,Arial,sans-serif;line-height:1.55;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{width:min(1120px,calc(100% - 28px));margin:0 auto;padding:18px 0 40px}
+button,input,textarea{font:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.hero{background:linear-gradient(135deg,#10213d,#151b43);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 45px #0005;position:relative;overflow:hidden}
+.hero:after{content:"✦";position:absolute;left:18px;top:0;font-size:84px;line-height:1;color:#c4b5fd1f;pointer-events:none}
+.kicker{color:#b9d8ff;font-size:13px;max-width:calc(100% - 70px)}
+.hero h1{font-size:clamp(26px,6vw,42px);line-height:1.25;margin:8px 0 6px;font-weight:900}
+.hero h1 span{display:inline-block;direction:ltr;color:#c4b5fd}
+.muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.stat{border:1px solid var(--line);background:#09172b;border-radius:14px;padding:12px 8px;text-align:center}
+.stat b{display:block;font-size:26px;line-height:1.2}
+.stat small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+.track{height:10px;border:1px solid var(--line);background:#06101e;border-radius:20px;overflow:hidden;margin-top:14px}
+.track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#a78bfa);transition:width .25s}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+button{border:1px solid var(--line);border-radius:12px;background:#102440;color:var(--txt);padding:10px 14px;min-height:42px;font-weight:700;font-size:14px;cursor:pointer;transition:filter .15s}
+button:hover{filter:brightness(1.18)}
+button.primary{background:#1d4ed8;border-color:#3b82f6}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.subject{--c:#60a5fa;background:linear-gradient(155deg,#0e1f37,#0a172a);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:0 9px 25px #0002}
+.head{display:flex;align-items:center;gap:11px;padding:13px 14px;background:color-mix(in srgb,var(--c) 20%,#0c1b31);border-bottom:1px solid color-mix(in srgb,var(--c) 40%,#203a5c)}
+.ico{height:40px;width:40px;flex:none;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 25%,#0a1930);border:1px solid var(--c);font-size:20px}
+.names{flex:1;min-width:0}
+.ar{font-weight:800;font-size:17px;line-height:1.35;overflow-wrap:anywhere}
+.en{direction:ltr;text-align:right;font-size:12px;color:#b6c9e2;overflow-wrap:anywhere}
+.count{flex:none;font-size:12px;color:#e7f1ff;background:#071426;border:1px solid var(--line);border-radius:9px;padding:4px 8px;white-space:nowrap}
+.list{padding:12px 14px 4px;display:grid;gap:7px}
+.chapter{display:flex;gap:10px;align-items:center;padding:9px 10px;background:#09182b;border:1px solid #1b3554;border-radius:12px;cursor:pointer}
+.chapter input{width:20px;height:20px;accent-color:var(--c);flex:none;margin:0}
+.chapter input:checked+span{text-decoration:line-through;opacity:.55}
+.chapter span{flex:1;min-width:0;overflow-wrap:anywhere}
+.remove{padding:4px 8px;min-height:36px;min-width:36px;font-size:13px;background:transparent;color:#91a7c0;border:0}
+.list .hint{margin:0;padding:6px 2px 8px;text-align:center}
+.add{display:flex;gap:8px;padding:10px 14px 12px}
+.add input,.newsubject input{min-width:0;flex:1;min-height:42px;border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:#071426;color:var(--txt);outline:none}
+.add input:focus,.newsubject input:focus{border-color:var(--c,var(--cyan))}
+.add button{flex:none;color:#dbeafe}
+.subjectfoot{padding:0 15px 14px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.subjectfoot span:first-child{direction:ltr}
+.mini{height:7px;flex:1;background:#06101e;border-radius:10px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--c);width:0}
+.month-section{margin-top:18px;background:linear-gradient(155deg,#0e1f37,#0a172a);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 9px 25px #0002}
+.month-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 18px;background:linear-gradient(135deg,#132a49,#171c43);border-bottom:1px solid var(--line)}
+.month-title{font-size:20px;font-weight:900}
+.month-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.calendar-wrap{padding:12px}
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+.day-name{text-align:center;font-weight:800;font-size:12px;color:#bad2ef;padding:8px 4px;background:#08172a;border:1px solid #1b3554;border-radius:10px}
+.day{min-height:120px;min-width:0;background:#09182b;border:1px solid #1b3554;border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.day.empty{background:transparent;border-style:dashed;opacity:.3;min-height:0}
+.day.fri{background:#0c1a33}
+.day.today{border-color:#38bdf8;box-shadow:inset 0 0 0 1px #38bdf840}
+.day.done{border-color:#22c55e66;background:#0a1f24}
+.day-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.day-num{font-weight:900;font-size:16px}
+.day-num small{display:none;font-weight:600;color:var(--muted);font-size:13px;margin-inline-start:6px}
+.day-check{width:20px;height:20px;margin:0;accent-color:#22c55e}
+.day textarea{width:100%;flex:1;min-height:70px;resize:vertical;border:1px solid #1b3554;border-radius:9px;padding:7px;background:#071426;color:var(--txt);font-size:13px;line-height:1.5;outline:none}
+.day textarea:focus{border-color:#38bdf8}
+.calendar-note{padding:0 16px 16px;color:var(--muted);font-size:12px;line-height:1.7}
+.newsubject{margin-top:16px;padding:14px;border:1px dashed #35547b;border-radius:17px;background:#0b1a30;display:flex;gap:8px;flex-wrap:wrap}
+.newsubject input{flex:1 1 180px}
+.hint{font-size:13px;color:var(--muted);line-height:1.8;margin-top:12px}
+footer{text-align:center;color:#8094ad;font-size:13px;margin-top:22px}
+@media(max-width:900px){.day{padding:6px}.day textarea{font-size:12px;padding:5px}.day-num{font-size:14px}}
+@media(max-width:720px){
+ .grid{grid-template-columns:1fr}
+ .hero{padding:18px}.stat b{font-size:22px}.stat small{font-size:11px}
+ .actions{display:grid;grid-template-columns:1fr 1fr}
+ .actions button{padding:10px 8px}
+ .calendar{grid-template-columns:1fr;gap:8px}
+ .day-name,.day.empty{display:none}
+ .day{min-height:0;padding:10px}
+ .day-num small{display:inline}
+ .day textarea{min-height:64px}
+ .newsubject button{flex:1 1 100%}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body><main class="wrap">
+<header class="hero"><div class="kicker">بسم الله الرحمن الرحيم · PERSONAL STUDY ORGANIZER</div>
+<h1>قائمة الشابترز <span style="color:#c4b5fd">Chapter To‑Do</span></h1>
+<div class="muted">نظّم موادك بالطريقة اللي تناسبك — من غير جدول مفروض أو تقسيم مذاكرة مسبق.</div>
+<div class="stats"><div class="stat"><b id="allCount">0</b><small>كل الشابترز · Total</small></div><div class="stat"><b id="doneCount">0</b><small>خلصت · Completed</small></div><div class="stat"><b id="percent">0%</b><small>نسبة الإنجاز · Progress</small></div></div>
+<div class="track"><i id="progress"></i></div></header>
+<div class="actions"><button onclick="clearChecks()">إلغاء كل العلامات</button><button onclick="resetAll()">إعادة ضبط القائمة</button><button onclick="exportData()">⬇️ تنزيل نسخة احتياطية</button><button onclick="document.getElementById('importFile').click()">⬆️ استرجاع بيانات</button><input id="importFile" type="file" accept="application/json,.json" hidden onchange="importData(event)"></div>
+<section class="grid" id="subjects"></section>
+
+<section class="month-section">
+  <div class="month-head">
+    <div>
+      <div class="month-title">📅 جدول الشهر — أكتوبر 2026</div>
+      <div class="month-sub">اكتب في كل يوم اللي ناوي تعمله بنفسك، وحط ✓ لما تخلص يومك.</div>
+    </div>
+    <div class="month-tools">
+      <button type="button" onclick="clearMonth()">مسح جدول الشهر</button>
+    </div>
+  </div>
+  <div class="calendar-wrap"><div class="calendar" id="calendar"></div></div>
+  <div class="calendar-note">الجدول مستقل عن الشابترز: تقدر تستخدمه للمحاضرات، المهام، المراجعة، أو أي حاجة تانية من غير ما يغيّر تقسيم المواد.</div>
+</section>
+
+<form class="newsubject" onsubmit="addSubject(event)"><input id="newAr" placeholder="اسم المادة بالعربي / Arabic subject" aria-label="اسم المادة بالعربي"><input id="newEn" placeholder="Subject name in English (optional)" aria-label="اسم المادة بالإنجليزي"><button class="primary" type="submit">＋ إضافة مادة</button></form>
+<p class="hint">اكتب اسم أي Chapter تحت المادة واضغط إضافة، وبعد ما تخلصه علّم عليه بنفسك. تقدر تضيف أو تحذف مواد وشابترز، والقائمة بتتحفظ تلقائيًا على نفس الجهاز والمتصفح.</p>
+<footer>ربنا يوفقك ويكتبلك النجاح والتوفيق 💙</footer></main>
+<script>
+const KEY="flexible_chapter_todo_v3";
+const initial=[
+ {ar:"الكيمياء الحيوية",en:"Biochemistry",icon:"⚗️",color:"#a78bfa",chapters:[]},
+ {ar:"علم الدم",en:"Hematology",icon:"🩸",color:"#fb7185",chapters:[]},
+ {ar:"الأجهزة والأدوات المعملية",en:"Medical Devices / TEC",icon:"🔬",color:"#22d3ee",chapters:[]},
+ {ar:"اللغة الإنجليزية",en:"English",icon:"📘",color:"#fbbf24",chapters:[]},
+ {ar:"الطفيليات",en:"Parasitology",icon:"🦠",color:"#4ade80",chapters:[]},
+ {ar:"الميكروبيولوجي",en:"Microbiology",icon:"🧫",color:"#60a5fa",chapters:[]}
+];
+let subjects;
+try{subjects=JSON.parse(localStorage.getItem(KEY));if(!Array.isArray(subjects))subjects=initial;}catch(e){subjects=initial;}
+
+const MONTH_KEY="flexible_chapter_month_oct_2026_v1";
+const dayNames=["السبت","الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+let monthDays={};
+try{monthDays=JSON.parse(localStorage.getItem(MONTH_KEY))||{};}catch(e){monthDays={};}
+
+function saveMonth(){try{localStorage.setItem(MONTH_KEY,JSON.stringify(monthDays));}catch(e){}}
+
+function renderCalendar(){
+  const root=document.getElementById("calendar");
+  if(!root)return;
+  root.innerHTML="";
+  // October 1, 2026 is Thursday. Calendar shown Saturday -> Friday.
+  const offset=5; // Sat=0 ... Thu=5
+  dayNames.forEach(d=>{
+    const h=document.createElement("div");
+    h.className="day-name";
+    h.textContent=d;
+    root.appendChild(h);
+  });
+  for(let i=0;i<offset;i++){
+    const blank=document.createElement("div");
+    blank.className="day empty";
+    root.appendChild(blank);
+  }
+  const now=new Date();
+  for(let day=1;day<=31;day++){
+    const item=monthDays[String(day)]||{note:"",done:false};
+    const cell=document.createElement("div");
+    cell.className="day"+((offset+day-1)%7===6?" fri":"")+(item.done?" done":"");
+    if(now.getFullYear()===2026 && now.getMonth()===9 && now.getDate()===day)cell.classList.add("today");
+    cell.innerHTML=`
+      <div class="day-top">
+        <span class="day-num">${day}<small>${dayNames[(offset+day-1)%7]} · أكتوبر</small></span>
+        <input class="day-check" type="checkbox" ${item.done?"checked":""} aria-label="إنجاز يوم ${day}">
+      </div>
+      <textarea placeholder="اكتب خطة / مهمة اليوم...">${esc(item.note||"")}</textarea>`;
+    const check=cell.querySelector(".day-check");
+    const ta=cell.querySelector("textarea");
+    check.addEventListener("change",()=>{
+      cell.classList.toggle("done",check.checked);
+      monthDays[String(day)]={note:ta.value,done:check.checked};
+      saveMonth();
+    });
+    ta.addEventListener("input",()=>{
+      monthDays[String(day)]={note:ta.value,done:check.checked};
+      saveMonth();
+    });
+    root.appendChild(cell);
+  }
+}
+function clearMonth(){
+  if(confirm("تمسح كل اللي مكتوب في جدول أكتوبر 2026؟")){
+    monthDays={};
+    saveMonth();
+    renderCalendar();
+  }
+}
+const palette=["#a78bfa","#fb7185","#22d3ee","#fbbf24","#4ade80","#60a5fa","#f472b6","#f97316"];
+const icons=["📚","🧪","🧠","📝","🧬","📖"];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(subjects));}catch(e){alert("المتصفح منع الحفظ التلقائي. نزّل نسخة احتياطية من زر التصدير.");}}
+function exportData(){
+ const blob=new Blob([JSON.stringify({version:2,updatedAt:new Date().toISOString(),subjects,monthDays},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="study-chapters-backup.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function importData(event){
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{try{
+  const data=JSON.parse(reader.result),items=Array.isArray(data)?data:data.subjects;
+  if(!Array.isArray(items)||!items.every(s=>s&&typeof s.ar==="string"&&Array.isArray(s.chapters)))throw new Error("invalid");
+  subjects=items.map(s=>({...s,chapters:s.chapters.map(c=>({name:String(c.name||"Chapter"),done:!!c.done}))}));
+  if(data&&data.monthDays&&typeof data.monthDays==="object") monthDays=data.monthDays;
+  save();saveMonth();render();renderCalendar();alert("تم استرجاع بياناتك والشهر بنجاح.");
+ }catch(e){alert("ملف النسخة الاحتياطية غير صالح.");}event.target.value="";};
+ reader.readAsText(file);
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const root=document.getElementById("subjects");root.innerHTML="";
+ let all=0,done=0;
+ subjects.forEach((s,si)=>{
+  const completed=s.chapters.filter(c=>c.done).length;all+=s.chapters.length;done+=completed;
+  const card=document.createElement("article");card.className="subject";card.style="--c:"+s.color;
+  const rows=s.chapters.map((c,ci)=>`<label class="chapter"><input type="checkbox" ${c.done?"checked":""} onchange="toggle(${si},${ci},this.checked)"><span>${esc(c.name)}</span><button type="button" class="remove" title="حذف الشابتر" onclick="removeChapter(event,${si},${ci})">✕</button></label>`).join("");
+  card.innerHTML=`<div class="head"><div class="ico">${s.icon||"📚"}</div><div class="names"><div class="ar">${esc(s.ar)}</div><div class="en">${esc(s.en||"")}</div></div><span class="count">${completed}/${s.chapters.length} ✓</span><button class="remove" type="button" title="حذف المادة" onclick="removeSubject(${si})">🗑</button></div>
+   <div class="list">${rows||'<div class="hint">لسه مفيش شابترز — أضف أول Chapter تحت.</div>'}</div>
+   <form class="add" onsubmit="addChapter(event,${si})"><input name="chapter" placeholder="اسم الشابتر / Chapter name" aria-label="اسم الشابتر" required><button type="submit">＋ إضافة</button></form>
+   <div class="subjectfoot"><span>${completed} / ${s.chapters.length} completed</span><div class="mini"><i style="width:${s.chapters.length?completed/s.chapters.length*100:0}%"></i></div><span>${s.chapters.length?Math.round(completed/s.chapters.length*100):0}%</span></div>`;
+  root.appendChild(card);
+ });
+ const pc=all?Math.round(done/all*100):0;document.getElementById("allCount").textContent=all;document.getElementById("doneCount").textContent=done;document.getElementById("percent").textContent=pc+"%";document.getElementById("progress").style.width=pc+"%";
+}
+function addChapter(e,si){e.preventDefault();const input=e.target.elements.chapter;const name=input.value.trim();if(!name)return;subjects[si].chapters.push({name,done:false});save();render();}
+function toggle(si,ci,v){subjects[si].chapters[ci].done=v;save();render();}
+function removeChapter(e,si,ci){e.preventDefault();e.stopPropagation();if(confirm("تحذف الشابتر ده؟")){subjects[si].chapters.splice(ci,1);save();render();}}
+function addSubject(e){e.preventDefault();const ar=document.getElementById("newAr"),en=document.getElementById("newEn");let name=ar.value.trim();if(!name)return;subjects.push({ar:name,en:en.value.trim(),icon:icons[(subjects.length)%icons.length],color:palette[subjects.length%palette.length],chapters:[]});ar.value="";en.value="";save();render();}
+function removeSubject(si){if(confirm("تحذف المادة وكل الشابترز اللي جواها؟")){subjects.splice(si,1);save();render();}}
+function clearChecks(){subjects.forEach(s=>s.chapters.forEach(c=>c.done=false));save();render();}
+function resetAll(){if(confirm("هتمسح المواد والشابترز المضافة وترجع القائمة الأساسية؟")){subjects=JSON.parse(JSON.stringify(initial));save();render();}}
+function expandAll(){document.querySelectorAll(".subject").forEach(x=>x.scrollIntoView({behavior:"smooth",block:"nearest"}));}
+render();
+renderCalendar();
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script></body></html>
